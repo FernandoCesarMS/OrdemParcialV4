@@ -1,6 +1,7 @@
 #ifndef GET_MAX_H
 #define GET_MAX_H
 #include <iostream>
+#include <math.h>
 /**
  * \brief This class represents a bit set, that is, a set represented as a map
  * of bits. The set has capacity to store 32 elements. For instance, the set
@@ -40,7 +41,28 @@ struct BitSet
  * former does not contain the first element, which is in the latter.
  * \return true if bit_set1 is greater than bit_set2
  */
-    // TODO: implement this operator.
+    bool operator>=(BitSet &i)
+    {
+        int x = i._set, y = _set;
+        for (int a = 0; a < 32; a++)
+        {
+            bool retorno = true;
+            
+            if (pow(2, 31 - a) <= x)
+            {
+                x = x - pow(2, 31 - a);
+                retorno = false;
+            }
+            if (pow(2, 31 - a) <= y)
+            {
+                y = y - pow(2, 31 - a);
+                retorno = true;
+            }
+            if (retorno == false)
+                return false;
+        }
+        return true;
+    }
 };
 /**
  * \brief The representation of an integer interval. An integer interval has a
@@ -64,7 +86,10 @@ struct Interval
  * (b1, b2) if a1 <= b1 and a2 >= b2.
  * \return true if interval1 is greater than or equal interval2
  */
-    // TODO: implement this operator.
+    bool operator>=(Interval &i)
+    {
+        return this->_l <= i._l && i._r <= this->_r;
+    }
 };
 /**
  * \brief Returns the greatest of two elements, or a default, if neither of
@@ -73,6 +98,17 @@ struct Interval
 template <class T>
 T GetMaxDefault(T a, T b, T dflt)
 {
-    // TODO: implement this generic function.
+    if (a >= b)
+    {
+        return a;
+    }
+    else
+    {
+        if (b >= a)
+        {
+            return b;
+        }
+    }
+    return dflt;
 }
 #endif
