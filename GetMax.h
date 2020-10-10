@@ -41,7 +41,7 @@ struct BitSet
  * former does not contain the first element, which is in the latter.
  * \return true if bit_set1 is greater than bit_set2
  */
-    bool operator>=(BitSet &i)
+    bool operator>=(const BitSet &i)
     {
         int x = i._set, y = _set;
         for (int a = 0; a < 32; a++)
@@ -88,7 +88,12 @@ struct Interval
  */
     bool operator>=(Interval &i)
     {
-        return this->_l <= i._l && i._r <= this->_r;
+        bool condEsquerda = true,condDireita = true;
+        if (_l > i._l)
+            condEsquerda = false;
+        if (_r< i._r)
+            condDireita = false;
+        return (condEsquerda) && (condDireita);
     }
 };
 /**
@@ -99,16 +104,10 @@ template <class T>
 T GetMaxDefault(T a, T b, T dflt)
 {
     if (a >= b)
-    {
         return a;
-    }
+    else if (b >= a)
+        return b;
     else
-    {
-        if (b >= a)
-        {
-            return b;
-        }
-    }
-    return dflt;
+        return dflt;
 }
 #endif
